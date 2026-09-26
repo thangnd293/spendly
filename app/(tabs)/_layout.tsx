@@ -1,10 +1,8 @@
-import { SymbolView } from 'expo-symbols';
-import { Link, Tabs } from 'expo-router';
-import { Platform, Pressable } from 'react-native';
-
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { Center } from "@/components/ui/center";
+import colors from "@/constants/colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { router, Tabs } from "expo-router";
+import { Pressable, Text } from "react-native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -12,59 +10,61 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
+        tabBarActiveTintColor: colors[colorScheme].accent,
+        headerShown: true,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => (
-            <SymbolView
-              name={{
-                ios: 'chevron.left.forwardslash.chevron.right',
-                android: 'code',
-                web: 'code',
-              }}
-              tintColor={color}
-              size={28}
-            />
-          ),
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable style={{ marginRight: 15 }}>
-                {({ pressed }) => (
-                  <SymbolView
-                    name={{ ios: 'info.circle', android: 'info', web: 'info' }}
-                    size={25}
-                    tintColor={Colors[colorScheme].text}
-                    style={{ opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          title: "Tổng quan",
+          tabBarLabel: "Tổng quan",
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="transactions"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => (
-            <SymbolView
-              name={{
-                ios: 'chevron.left.forwardslash.chevron.right',
-                android: 'code',
-                web: 'code',
-              }}
-              tintColor={color}
-              size={28}
-            />
-          ),
+          title: "Sổ giao dịch",
+          tabBarLabel: "Sổ giao dịch",
+        }}
+      />
+      <Tabs.Screen
+        name="compose"
+        options={{
+          title: "",
+          tabBarLabel: () => null,
+          tabBarButton: () => <AddTransactionButton />,
+        }}
+      />
+      <Tabs.Screen
+        name="budget"
+        options={{
+          title: "Ngân sách",
+          tabBarLabel: "Ngân sách",
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: "Tài khoản",
+          tabBarLabel: "Tài khoản",
         }}
       />
     </Tabs>
+  );
+}
+
+function AddTransactionButton() {
+  const onAddTransaction = () => router.push("/add-transaction");
+
+  return (
+    <Center>
+      <Pressable
+        className="bg-primary size-14 rounded-full justify-center items-center -mt-3"
+        onPress={onAddTransaction}
+      >
+        <Text className="text-3xl text-white">+</Text>
+      </Pressable>
+    </Center>
   );
 }

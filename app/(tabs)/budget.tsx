@@ -1,0 +1,9 @@
+import { View, Text } from "react-native";
+
+export default function BudgetScreen() {
+  return (
+    <View>
+      <Text>BudgetScreen</Text>
+    </View>
+  );
+}
