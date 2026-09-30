@@ -1,7 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import { useTabsContext } from "./Context";
-import { tabsContentStyle } from "./styles";
 
 type TabsContentProps = React.ComponentPropsWithoutRef<typeof View> & {
   value: string;
@@ -23,7 +22,7 @@ const TabsContent = React.forwardRef<
     return (
       <View
         ref={ref}
-        className={tabsContentStyle({ class: className })}
+        className={className}
         onLayout={(event) => {
           onLayout?.(event);
           registerContent(value, event.nativeEvent.layout);

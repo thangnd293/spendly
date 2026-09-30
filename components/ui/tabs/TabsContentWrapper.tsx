@@ -6,13 +6,12 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { useTabsContext } from "./Context";
-import { tabsContentWrapperStyle } from "./styles";
 
 type TabsContentWrapperProps = React.ComponentPropsWithoutRef<typeof View>;
 const TabsContentWrapper = React.forwardRef<
   React.ComponentRef<typeof Animated.View>,
   TabsContentWrapperProps
->(({ className, ...props }, ref) => {
+>((props, ref) => {
   const { selectedValue, contentLayouts } =
     useTabsContext("TabsContentWrapper");
   const contentHeight = selectedValue
@@ -36,14 +35,7 @@ const TabsContentWrapper = React.forwardRef<
     height: animatedHeight.value > 0 ? animatedHeight.value : undefined,
   }));
 
-  return (
-    <Animated.View
-      ref={ref}
-      style={animatedStyle}
-      className={tabsContentWrapperStyle({ class: className })}
-      {...props}
-    />
-  );
+  return <Animated.View ref={ref} style={animatedStyle} {...props} />;
 });
 
 TabsContentWrapper.displayName = "TabsContentWrapper";

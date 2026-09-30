@@ -25,11 +25,3 @@ export const tabsIndicatorStyle = tv({
 export const tabsTriggerTextStyle = tv({
   base: "text-foreground/70 data-[selected=true]:text-black data-[hover=true]:text-foreground/90",
 });
-
-export const tabsContentStyle = tv({
-  base: "p-2",
-});
-
-export const tabsContentWrapperStyle = tv({
-  base: "overflow-hidden rounded-lg",
-});
