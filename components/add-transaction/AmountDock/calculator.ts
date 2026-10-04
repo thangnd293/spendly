@@ -142,17 +142,6 @@ export function initialState(initial: string): CalcState {
   };
 }
 
-export function formatShownAmount(amount: number) {
-  const safeAmount = Math.max(0, amount);
-  if (!Number.isFinite(safeAmount)) return '0';
-
-  const formatted = formatEntry(safeAmount);
-  const [integer, fraction] = formatted.split('.');
-  const groupedInteger = groupInteger(integer, '.');
-
-  return fraction ? `${groupedInteger}.${fraction}` : groupedInteger;
-}
-
 export function formatExpression(expression: string) {
   return expression.replace(/-?\d+(?:\.\d*)?/g, (value) => {
     const negative = value.startsWith('-');

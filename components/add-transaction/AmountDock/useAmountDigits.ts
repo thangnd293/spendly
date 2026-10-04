@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { TextInput } from 'react-native';
 
+import { formatMoney } from '@/utils/money';
 import {
   appendEntry,
   applyOp,
@@ -13,7 +14,6 @@ import {
   expressionOf,
   formatEntry,
   formatExpression,
-  formatShownAmount,
   initialState,
   MINUS,
   MULTIPLY,
@@ -84,10 +84,10 @@ export function useAmountDigits(initial = '') {
 
   return {
     digits: String(Math.max(0, Math.round(amount))),
-    shown: state.acc === null && state.entry === '' ? '' : formatShownAmount(amount),
+    shown: state.acc === null && state.entry === '' ? '' : formatMoney(amount),
     formattedExpression: formatExpression(expressionOf(state)),
     hasExpression: state.op !== null,
-    amountVnd: Math.max(0, Math.round(amount)),
+    amountVnd: Math.max(0, roundCalc(amount)),
     mode,
     inputRef,
     open: () => setMode(true),

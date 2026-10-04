@@ -9,7 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Center, HStack, Text } from '@/components/ui';
+import { Button, Center, HStack, Text } from '@/components/ui';
 import {
   ANIMATION_DURATION_MS,
   CalcKey,
@@ -104,15 +104,13 @@ export function AmountDock({
       style={[{ paddingBottom: bottomPad }, dockStyle]}
     >
       <View className="px-2 pb-1 pt-2" onLayout={onChromeLayout}>
-        <Pressable
-          className="flex-1 items-center justify-center rounded-full bg-primary py-2"
+        <Button
+          variant="primary"
+          className="flex-1"
           disabled={!canSave}
           onPress={onSave}
-        >
-          <Text className="text-white" size="lg">
-            {saveLabel}
-          </Text>
-        </Pressable>
+          title={saveLabel}
+        />
       </View>
 
       <Animated.View

@@ -1,7 +1,9 @@
-import { Center, Divider, HStack, Text } from '@/components/ui';
 import { X } from 'lucide-react-native';
 import { RefObject } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
+
+import { FormRowLeading } from '@/components/add-transaction/FormRowLeading';
+import { Divider, HStack, Text } from '@/components/ui';
 
 type AmountFieldProps = {
   value: string;
@@ -14,11 +16,11 @@ type AmountFieldProps = {
 export function AmountField({ value, autoFocus, inputRef, onFocus, onClear }: AmountFieldProps) {
   return (
     <HStack className="mt-3">
-      <Center className="w-20">
+      <FormRowLeading>
         <Pressable className="items-center justify-center rounded-[4px] border border-border px-2 py-1">
           <Text className="text-muted">VND</Text>
         </Pressable>
-      </Center>
+      </FormRowLeading>
       <View className="flex-1">
         <HStack space="md" className="items-center justify-between py-5">
           <Text className="absolute -top-1 text-muted" size="sm">
@@ -48,7 +50,7 @@ export function AmountField({ value, autoFocus, inputRef, onFocus, onClear }: Am
             </Pressable>
           )}
         </HStack>
-        <Divider className="bg-border" />
+        <Divider />
       </View>
     </HStack>
   );
