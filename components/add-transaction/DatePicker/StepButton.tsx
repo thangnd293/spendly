@@ -1,6 +1,7 @@
-import useColors from '@/hooks/useColors';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { Pressable } from 'react-native';
+
+import useColors from '@/hooks/useColors';
 
 type StepButtonProps = {
   direction: 'left' | 'right';

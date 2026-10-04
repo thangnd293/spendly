@@ -1,13 +1,15 @@
-import useColors from '@/hooks/useColors';
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { useState } from 'react';
 import { Modal, Pressable } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
-import { Center, HStack, Text } from '@/components/ui';
+
+import { HStack, Text } from '@/components/ui';
+import useColors from '@/hooks/useColors';
+import { FormRowLeading } from '../FormRowLeading';
 import { addDays, formatBar, fromYmd, toYmd } from './dateUtils';
+import './locale';
 import { MonthPicker } from './MonthPicker';
 import { StepButton } from './StepButton';
-import './locale';
 
 type DatePickerProps = {
   value: Date;
@@ -17,11 +19,11 @@ type DatePickerProps = {
 
 function DatePicker({ value, onChange, onOpen }: DatePickerProps) {
   const colors = useColors();
-
   const [open, setOpen] = useState(false);
   const [monthPickerOpen, setMonthPickerOpen] = useState(false);
   const [pickerYear, setPickerYear] = useState(value.getFullYear());
   const [calendarStart, setCalendarStart] = useState(toYmd(value));
+
   const selected = toYmd(value);
 
   function backToCalendar() {
@@ -49,9 +51,9 @@ function DatePicker({ value, onChange, onOpen }: DatePickerProps) {
   return (
     <>
       <HStack className="items-center">
-        <Center className="w-20">
+        <FormRowLeading>
           <CalendarDays />
-        </Center>
+        </FormRowLeading>
         <HStack className="flex-1 items-center py-3 pr-1" space="lg">
           <StepButton
             direction="left"
