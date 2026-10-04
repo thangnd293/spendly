@@ -1,9 +1,9 @@
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { vars } from "nativewind";
-import React from "react";
-import { View } from "react-native";
+import { vars } from 'nativewind';
+import { PropsWithChildren } from 'react';
+import { View } from 'react-native';
 
-import colors from "@/constants/colors";
+import colors from '@/constants/colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 function toCssVariables(palette: Record<string, string>) {
   return Object.fromEntries(
@@ -11,15 +11,12 @@ function toCssVariables(palette: Record<string, string>) {
   ) as Record<string, string>;
 }
 
-export default function Theme({ children }: React.PropsWithChildren) {
+export default function Theme({ children }: PropsWithChildren) {
   const colorScheme = useColorScheme();
   const palette = colors[colorScheme];
 
   return (
-    <View
-      className="flex-1 bg-background"
-      style={vars(toCssVariables(palette))}
-    >
+    <View className="flex-1" style={vars(toCssVariables(palette))}>
       {children}
     </View>
   );

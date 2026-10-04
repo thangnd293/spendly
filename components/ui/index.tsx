@@ -1,4 +1,5 @@
 export * from './Center';
+export * from './Button';
 export * from './Divider';
 export * from './HStack';
 export * from './Image';

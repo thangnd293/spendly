@@ -1,40 +1,52 @@
-import React from "react";
-import { View } from "react-native";
-import { RadioGroupContext } from "./Context";
-import { radioGroupStyle } from "./styles";
+import React from 'react';
+import { View } from 'react-native';
 
-type RadioGroupProps = Omit<
-  React.ComponentPropsWithoutRef<typeof View>,
-  "children"
-> & {
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-  orientation?: "horizontal" | "vertical";
-  disabled?: boolean;
-  children?: React.ReactNode;
+import { RadioGroupContext } from './Context';
+import { RadioGroupIndicator } from './RadioGroupIndicator';
+import { RadioGroupItem } from './RadioGroupItem';
+import { RadioGroupItemText } from './RadioGroupItemText';
+import { radioGroupStyle } from './styles';
+
+type RadioGroupOption = {
+  value: string;
+  label: React.ReactNode;
+  className?: string;
 };
 
-const RadioGroup = React.forwardRef<
+type RadioGroupProps<Items extends readonly RadioGroupOption[]> = Omit<
+  React.ComponentPropsWithoutRef<typeof View>,
+  'children'
+> & {
+  items: Items;
+  itemClassName?: string;
+  value?: Items[number]['value'];
+  defaultValue?: Items[number]['value'];
+  onValueChange?: (value: Items[number]['value']) => void;
+  orientation?: 'horizontal' | 'vertical';
+  disabled?: boolean;
+};
+
+const RadioGroupImplementation = React.forwardRef<
   React.ComponentRef<typeof View>,
-  RadioGroupProps
+  RadioGroupProps<readonly RadioGroupOption[]>
 >(
   (
     {
       value,
       defaultValue,
       onValueChange,
-      orientation = "horizontal",
+      orientation = 'horizontal',
       disabled = false,
       className,
-      children,
+      items,
+      itemClassName,
       ...props
     },
     ref,
   ) => {
-    const [uncontrolledValue, setUncontrolledValue] = React.useState<
-      string | null
-    >(defaultValue ?? null);
+    const [uncontrolledValue, setUncontrolledValue] = React.useState<string | null>(
+      defaultValue ?? null,
+    );
     const selectedValue = value !== undefined ? value : uncontrolledValue;
     const [triggerLayouts, setTriggerLayouts] = React.useState<
       Map<string, { x: number; y: number; width: number; height: number }>
@@ -77,12 +89,26 @@ const RadioGroup = React.forwardRef<
           className={radioGroupStyle({ orientation, class: className })}
           {...props}
         >
-          {children}
+          {items.map((item) => (
+            <RadioGroupItem
+              key={item.value}
+              value={item.value}
+              className={[itemClassName, item.className].filter(Boolean).join(' ')}
+            >
+              <RadioGroupItemText>{item.label}</RadioGroupItemText>
+            </RadioGroupItem>
+          ))}
+          <RadioGroupIndicator />
         </View>
       </RadioGroupContext.Provider>
     );
   },
 );
 
-RadioGroup.displayName = "RadioGroup";
+type RadioGroupComponent = <const Items extends readonly RadioGroupOption[]>(
+  props: RadioGroupProps<Items> & React.RefAttributes<React.ComponentRef<typeof View>>,
+) => React.ReactElement;
+
+const RadioGroup = RadioGroupImplementation as RadioGroupComponent & { displayName?: string };
+RadioGroup.displayName = 'RadioGroup';
 export { RadioGroup };

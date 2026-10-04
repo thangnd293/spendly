@@ -1,23 +1,19 @@
-import React from "react";
-import { Image as RNImage } from "react-native";
-import { tv, VariantProps } from "tailwind-variants";
-import { imageStyle } from "./styles";
+import React from 'react';
+import { Image as RNImage } from 'react-native';
+import { tv, VariantProps } from 'tailwind-variants';
+import { imageStyle } from './styles';
 
-const DEFAULT_IMAGE = require("@/assets/images/placeholder.png");
+const DEFAULT_IMAGE = require('@/assets/images/placeholder.png');
 
-type ImageProps = VariantProps<typeof imageStyle> &
-  React.ComponentProps<typeof RNImage>;
+type ImageProps = VariantProps<typeof imageStyle> & React.ComponentProps<typeof RNImage>;
 
 const Image = React.forwardRef<
   React.ComponentRef<typeof RNImage>,
   ImageProps & { className?: string }
->(function Image(
-  { size = "md", className, alt, source: sourceProp, ...props },
-  ref,
-) {
+>(function Image({ size = 'md', className, alt, source: sourceProp, ...props }, ref) {
   let source = sourceProp ?? DEFAULT_IMAGE;
 
-  if (typeof source === "string") {
+  if (typeof source === 'string') {
     source = { uri: source };
   }
 
@@ -25,20 +21,20 @@ const Image = React.forwardRef<
     source = source[0] ?? DEFAULT_IMAGE;
   }
 
-  if (typeof alt !== "string") {
-    console.warn("Please pass alt prop to Image component");
+  if (typeof alt !== 'string') {
+    console.warn('Please pass alt prop to Image component');
   }
 
   return (
     <RNImage
       {...props}
       source={source}
-      accessibilityLabel={props?.["aria-label"] || alt}
+      accessibilityLabel={props?.['aria-label'] || alt}
       className={imageStyle({ size, class: className })}
       ref={ref}
     />
   );
 });
 
-Image.displayName = "Image";
+Image.displayName = 'Image';
 export { Image };
