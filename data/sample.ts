@@ -78,27 +78,6 @@ export const groupedTransaction: {
   },
 ];
 
-export const SAMPLE_ACCOUNTS = [
-  {
-    id: 'acc_cash',
-    name: 'Tiền mặt',
-    kind: 'cash' as const,
-    openingBalanceVnd: 2_000_000,
-    openingOn: '2026-09-01',
-    isArchived: false,
-    icon: 'icon_109.png',
-  },
-  {
-    id: 'acc_vcb',
-    name: 'VCB',
-    kind: 'bank' as const,
-    openingBalanceVnd: 18_000_000,
-    openingOn: '2026-09-01',
-    isArchived: false,
-    icon: 'icon_109.png',
-  },
-] as const;
-
 type SampleCategory = {
   id: string;
   name: string;
