@@ -1,23 +1,18 @@
-import TransactionGroupByDate from "@/components/TransactionGroupByDate";
-import { VStack } from "@/components/ui/vstack";
-import { groupedTransaction } from "@/data/sample";
-import { FlatList, View } from "react-native";
+import { Button } from '@/components/ui';
+import { VStack } from '@/components/ui/VStack';
+import { deleteDatabaseAsync, useSQLiteContext } from 'expo-sqlite';
 
 export default function HomeScreen() {
+  const db = useSQLiteContext();
+
+  async function dropDb() {
+    await db.closeAsync();
+    await deleteDatabaseAsync('spendly.db');
+  }
+
   return (
     <VStack className="px-3 py-2">
-      <FlatList
-        data={groupedTransaction}
-        ItemSeparatorComponent={() => <View className="h-6" />}
-        renderItem={({ item }) => (
-          <TransactionGroupByDate
-            date={item.date}
-            totalAmount={item.totalAmountVnd}
-            transactions={item.transactions}
-          />
-        )}
-        keyExtractor={(item) => item.date}
-      />
+      <Button title="Drop DB" onPress={dropDb} />
     </VStack>
   );
 }

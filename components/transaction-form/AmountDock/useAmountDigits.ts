@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { ElementRef, useEffect, useRef, useState } from 'react';
 import { TextInput } from 'react-native';
 
 import { formatMoney } from '@/utils/money';
@@ -27,6 +27,11 @@ export function useAmountDigits(initial = '') {
   const [mode, setMode] = useState(true);
   const inputRef = useRef<TextInput>(null);
   const amount = previewValue(state);
+
+  useEffect(() => {
+    setState(initialState(initial));
+    setMode(false);
+  }, [initial]);
 
   function push(key: CalcKey) {
     setState((current) => {

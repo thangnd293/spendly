@@ -2,7 +2,7 @@ import { X } from 'lucide-react-native';
 import { RefObject } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
-import { FormRowLeading } from '@/components/add-transaction/FormRowLeading';
+import { FormRowLeading } from '@/components/transaction-form/FormRowLeading';
 import { Divider, HStack, Text } from '@/components/ui';
 
 type AmountFieldProps = {

@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { FlatList, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAddCategory } from '@/components/add-transaction/AddCategoryContext';
+import { useAddCategory } from '@/components/transaction-form/AddCategoryContext';
 import { Image } from '@/components/ui';
 import { fileName, iconKeys, iconSource } from '@/utils/icons';
 

@@ -4,25 +4,47 @@ import { ChevronRight, ChevronsUpDown, Diff, Package, X } from 'lucide-react-nat
 import { KeyboardAvoidingView, Platform, Pressable, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAddCategory } from '@/components/add-transaction/AddCategoryContext';
-import { FormRowLeading } from '@/components/add-transaction/FormRowLeading';
+import { useDraftTransaction } from '@/components/transaction-form';
+import { useAddCategory } from '@/components/transaction-form/AddCategoryContext';
+import { FormRowLeading } from '@/components/transaction-form/FormRowLeading';
 import { Button, Divider, HStack, Image, RadioGroup, Text, VStack } from '@/components/ui';
-import { PARENT_CATEGORIES } from '@/data/sample';
+import { CategoryKind, getCategoryById, insertCategory } from '@/data/category';
 import useColors from '@/hooks/useColors';
+import { useDbMutation } from '@/hooks/useDbMutation';
+import { useDbQuery } from '@/hooks/useDbQuery';
 import { iconName, iconSource } from '@/utils/icons';
 
 export default function AddCategoryScreen() {
   const insets = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
   const colors = useColors();
-  const { name, setName, parentId, setParentId, icon, kind, setKind } = useAddCategory();
+  const draftCategory = useAddCategory();
+  const draftTransaction = useDraftTransaction();
 
-  const parentCategory = PARENT_CATEGORIES.find((category) => category.id === parentId);
+  const { data: parentCategory } = useDbQuery(
+    (db) => getCategoryById(db, draftCategory.parentId),
+    [draftCategory.parentId],
+    null,
+  );
+  const { run: save } = useDbMutation(insertCategory);
+
   const hasParent = Boolean(parentCategory);
-  const saveDisabled = !name.trim() || !parentId;
+  const saveDisabled = !draftCategory.name.trim();
 
-  function onSaveCategory() {
-    console.log('Save Category: ', { name, icon, parentId, kind });
+  async function onSaveCategory() {
+    await save({
+      name: draftCategory.name,
+      icon: draftCategory.icon,
+      parentId: draftCategory.parentId,
+      kind: draftCategory.kind,
+    });
+    draftTransaction.setKind(draftCategory.kind);
+    router.back();
+  }
+
+  function onKindChange(value: CategoryKind) {
+    draftCategory.setKind(value);
+    draftCategory.setParentId(null);
   }
 
   return (
@@ -37,17 +59,21 @@ export default function AddCategoryScreen() {
             <HStack space="md" className="items-center p-3">
               <Pressable
                 className="flex-row items-center gap-1.5 rounded-3xl bg-surfaceSecondary p-1.5"
-                onPress={() => router.push('/add-transaction/select-icon')}
+                onPress={() => router.push('/transaction-form/select-icon')}
               >
-                <Image size="xs" source={iconSource(icon)} alt={iconName(icon)} />
+                <Image
+                  size="xs"
+                  source={iconSource(draftCategory.icon)}
+                  alt={iconName(draftCategory.icon)}
+                />
                 <ChevronsUpDown size={16} color={colors.muted} />
               </Pressable>
 
               <TextInput
                 className="flex-1 p-1 text-2xl text-foreground"
                 placeholder="Tên nhóm"
-                value={name}
-                onChangeText={setName}
+                value={draftCategory.name}
+                onChangeText={draftCategory.setName}
                 accessibilityLabel="Tên nhóm"
                 style={{ includeFontPadding: false }}
               />
@@ -62,12 +88,12 @@ export default function AddCategoryScreen() {
             <VStack space="lg" className="flex-1">
               <RadioGroup
                 className="self-start"
-                value={kind}
+                value={draftCategory.kind}
                 items={[
                   { value: 'spend', label: 'Khoản chi' },
                   { value: 'income', label: 'Khoản thu' },
                 ]}
-                onValueChange={setKind}
+                onValueChange={onKindChange}
               />
               <Divider />
             </VStack>
@@ -76,7 +102,7 @@ export default function AddCategoryScreen() {
           <HStack>
             <Pressable
               className="flex-1 flex-row active:bg-black/10"
-              onPress={() => router.push('/add-transaction/select-parent-category')}
+              onPress={() => router.push('/transaction-form/select-parent-category')}
               accessibilityRole="button"
             >
               <FormRowLeading>
@@ -106,7 +132,7 @@ export default function AddCategoryScreen() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/20 p-1"
                 accessibilityRole="button"
                 accessibilityLabel="Xóa nhóm cha"
-                onPress={() => setParentId(null)}
+                onPress={() => draftCategory.setParentId(null)}
               >
                 <X size={14} color="white" />
               </Pressable>

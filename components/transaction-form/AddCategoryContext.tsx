@@ -1,3 +1,4 @@
+import { CategoryKind } from '@/data/category';
 import {
   createContext,
   Dispatch,
@@ -7,8 +8,6 @@ import {
   useState,
 } from 'react';
 
-export type CategoryKind = 'spend' | 'income';
-
 type AddCategoryContextValue = {
   name: string;
   setName: Dispatch<SetStateAction<string>>;
@@ -16,6 +15,7 @@ type AddCategoryContextValue = {
   setParentId: Dispatch<SetStateAction<string | null>>;
   icon: string;
   setIcon: Dispatch<SetStateAction<string>>;
+  reset: () => void;
   kind: CategoryKind;
   setKind: Dispatch<SetStateAction<CategoryKind>>;
 };
@@ -28,6 +28,13 @@ export function AddCategoryProvider({ children }: PropsWithChildren) {
   const [icon, setIcon] = useState('icon_1.png');
   const [kind, setKind] = useState<CategoryKind>('spend');
 
+  function reset() {
+    setName('');
+    setParentId(null);
+    setIcon('icon_1.png');
+    setKind('spend');
+  }
+
   return (
     <AddCategoryContext.Provider
       value={{
@@ -39,6 +46,7 @@ export function AddCategoryProvider({ children }: PropsWithChildren) {
         setIcon,
         kind,
         setKind,
+        reset,
       }}
     >
       {children}

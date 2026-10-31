@@ -1,42 +1,54 @@
-import { useFonts } from "expo-font";
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
+import {
+  Roboto_400Regular,
+  Roboto_500Medium,
+  Roboto_600SemiBold,
+  Roboto_700Bold,
+  useFonts,
+} from '@expo-google-fonts/roboto';
+import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { SQLiteProvider } from 'expo-sqlite';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+import 'react-native-reanimated';
 
-import "@/global.css";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import Theme from "@/components/Theme";
+import Theme from '@/components/Theme';
+import { DraftTransactionProvider } from '@/components/transaction-form';
+import '@/global.css';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { migrate } from '@/utils/db';
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
-} from "expo-router";
+} from 'expo-router';
 
 export const unstable_settings = {
-  initialRouteName: "(tabs)",
+  anchor: '(tabs)',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+  const [fontsLoaded, fontError] = useFonts({
+    Roboto_400Regular,
+    Roboto_500Medium,
+    Roboto_600SemiBold,
+    Roboto_700Bold,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    if (fontError) {
+      throw fontError;
+    }
+  }, [fontError]);
 
   useEffect(() => {
-    if (loaded) {
+    if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [fontsLoaded]);
 
-  if (!loaded) {
+  if (!fontsLoaded) {
     return null;
   }
 
@@ -47,16 +59,33 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Theme>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="add-transaction"
-            options={{ presentation: "modal", title: "Thêm Giao Dịch" }}
-          />
-        </Stack>
-      </Theme>
-    </ThemeProvider>
+    <SQLiteProvider databaseName="spendly.db" onInit={migrate}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Theme>
+          <DraftTransactionProvider>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="transaction-form"
+                options={{
+                  presentation: 'modal',
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="transaction/[id]"
+                options={{
+                  title: '',
+                  headerBackButtonDisplayMode: 'minimal',
+                  headerTransparent: false,
+                  headerShadowVisible: false,
+                  headerShown: true,
+                }}
+              />
+            </Stack>
+          </DraftTransactionProvider>
+        </Theme>
+      </ThemeProvider>
+    </SQLiteProvider>
   );
 }

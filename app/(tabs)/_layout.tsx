@@ -1,37 +1,47 @@
-import { Center } from "@/components/ui/center";
-import colors from "@/constants/colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { router, Tabs } from "expo-router";
-import { Pressable, Text } from "react-native";
+import { router, Tabs } from 'expo-router';
+import { Banknote, House, Plus, UserRound, Wallet } from 'lucide-react-native';
+import { Pressable } from 'react-native';
+
+import { Center } from '@/components/ui/Center';
+import useColors from '@/hooks/useColors';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const colors = useColors();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors[colorScheme].accent,
+        tabBarActiveTintColor: colors.primary,
         headerShown: true,
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: colors.background,
+        },
+        sceneStyle: {
+          backgroundColor: colors.background,
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Tổng quan",
-          tabBarLabel: "Tổng quan",
+          title: 'Tổng quan',
+          tabBarLabel: 'Tổng quan',
+          tabBarIcon: () => <House />,
         }}
       />
       <Tabs.Screen
-        name="transactions"
+        name="ledger"
         options={{
-          title: "Sổ giao dịch",
-          tabBarLabel: "Sổ giao dịch",
+          title: 'Sổ giao dịch',
+          tabBarLabel: 'Sổ giao dịch',
+          tabBarIcon: () => <Wallet />,
         }}
       />
       <Tabs.Screen
         name="compose"
         options={{
-          title: "",
+          title: '',
           tabBarLabel: () => null,
           tabBarButton: () => <AddTransactionButton />,
         }}
@@ -39,15 +49,17 @@ export default function TabLayout() {
       <Tabs.Screen
         name="budget"
         options={{
-          title: "Ngân sách",
-          tabBarLabel: "Ngân sách",
+          title: 'Ngân sách',
+          tabBarLabel: 'Ngân sách',
+          tabBarIcon: () => <Banknote />,
         }}
       />
       <Tabs.Screen
         name="account"
         options={{
-          title: "Tài khoản",
-          tabBarLabel: "Tài khoản",
+          title: 'Tài khoản',
+          tabBarLabel: 'Tài khoản',
+          tabBarIcon: () => <UserRound />,
         }}
       />
     </Tabs>
@@ -55,15 +67,15 @@ export default function TabLayout() {
 }
 
 function AddTransactionButton() {
-  const onAddTransaction = () => router.push("/add-transaction");
+  const onAddTransaction = () => router.push('/transaction-form/add');
 
   return (
     <Center>
       <Pressable
-        className="bg-primary size-14 rounded-full justify-center items-center -mt-3"
+        className="-mt-3 size-14 items-center justify-center rounded-full bg-primary"
         onPress={onAddTransaction}
       >
-        <Text className="text-3xl text-white">+</Text>
+        <Plus color="white" />
       </Pressable>
     </Center>
   );
