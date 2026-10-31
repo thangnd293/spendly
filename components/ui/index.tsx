@@ -7,3 +7,4 @@ export * from './RadioGroup';
 export * from './tabs';
 export * from './Text';
 export * from './VStack';
+export * from './AlertDialog';

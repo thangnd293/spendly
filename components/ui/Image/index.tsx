@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image as RNImage } from 'react-native';
-import { tv, VariantProps } from 'tailwind-variants';
+import { VariantProps } from 'tailwind-variants';
+
 import { imageStyle } from './styles';
 
 const DEFAULT_IMAGE = require('@/assets/images/placeholder.png');

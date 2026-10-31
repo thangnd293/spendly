@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const textStyle = tv({
-  base: "text-foreground font-body",
+  base: "text-foreground",
   variants: {
     bold: {
       true: "font-bold",
