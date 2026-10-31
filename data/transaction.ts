@@ -134,6 +134,60 @@ export async function insertTransaction(db: SQLiteDatabase, input: TransactionIn
   return id;
 }
 
+export async function updateTransaction(
+  db: SQLiteDatabase,
+  {
+    id,
+    input,
+  }: {
+    id: string;
+    input: TransactionInput;
+  },
+) {
+  await assertValid(db, input);
+
+  const result = await db.runAsync(
+    /*sql*/ `
+    UPDATE "transaction"
+    SET
+      type = ?,
+      occurred_on = ?,
+      year_month = ?,
+      amount_vnd = ?,
+      account_id = ?,
+      category_id = ?,
+      payee = ?,
+      note = ?
+    WHERE id = ?
+  `,
+    input.type,
+    input.occurredOn,
+    input.occurredOn.slice(0, 7),
+    input.amountVnd,
+    input.accountId,
+    input.categoryId,
+    input.payee?.trim() ?? null,
+    input.note?.trim() ?? null,
+    id,
+  );
+
+  if (result.changes !== 1) throw new Error('Transaction not found or update failed');
+}
+
+export async function deleteTransaction(db: SQLiteDatabase, id: string) {
+  const result = await db.runAsync(
+    /*sql*/ `
+      DELETE FROM "transaction"
+      WHERE id = ?
+    `,
+    id,
+  );
+
+  if (result.changes !== 1) {
+    throw new Error('Transaction not found or delete failed');
+  }
+}
+
 function formatDateForQuery(date: Date) {
   if (Number.isNaN(date.getTime())) {
     throw new RangeError('Invalid transaction date filter');
@@ -274,4 +328,33 @@ export async function listGroupedTransactions(
   }
 
   return Array.from(groups.values());
+}
+
+export async function getTransactionById(
+  db: SQLiteDatabase,
+  id: string,
+): Promise<GroupedTransactionItem | null> {
+  return db.getFirstAsync<GroupedTransactionItem>(
+    /* SQL */ `
+    SELECT
+      t.id,
+      t.type,
+      t.occurred_on AS "occurredOn",
+      t.amount_vnd AS "amountVnd",
+      t.account_id AS "accountId",
+      a.name AS "accountName",
+      a.icon AS "accountIcon",
+      t.category_id AS "categoryId",
+      c.name AS "categoryName",
+      c.icon AS "categoryIcon",
+      COALESCE(NULLIF(TRIM(t.payee), ''), c.name, 'Khác') AS title,
+      t.note
+    FROM "transaction" t
+    LEFT JOIN account a ON t.account_id = a.id
+    LEFT JOIN category c ON t.category_id = c.id
+    WHERE t.id = ?
+    LIMIT 1
+  `,
+    id,
+  );
 }
