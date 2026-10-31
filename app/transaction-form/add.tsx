@@ -1,25 +1,20 @@
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { NotepadText } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 
 import {
   AmountDock,
-  AmountField,
-  ChooserButton,
-  DatePicker,
+  TransactionFormFields,
   useAmountDigits,
 } from '@/components/transaction-form';
 import { useDraftTransaction } from '@/components/transaction-form/DraftTransactionContext';
-import { Image, RadioGroup } from '@/components/ui';
 import { getAccountById } from '@/data/account';
 import { CategoryKind, getCategoryById } from '@/data/category';
 import { insertTransaction } from '@/data/transaction';
 import { useDbMutation } from '@/hooks/useDbMutation';
 import { useDbQuery } from '@/hooks/useDbQuery';
 import { formatDateForStorage } from '@/utils/date';
-import { iconName, iconSource } from '@/utils/icons';
 
 export default function AddTransactionScreen() {
   const amount = useAmountDigits();
@@ -86,67 +81,29 @@ export default function AddTransactionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <View className="m-6">
-          <View className="rounded-t-3xl bg-surface pt-2">
-            <RadioGroup
-              className="mx-4"
-              itemClassName="w-1/2"
-              items={[
-                { value: 'spend', label: 'Khoản chi' },
-                { value: 'income', label: 'Khoản thu' },
-              ]}
-              value={kind}
-              onValueChange={onKindChange}
-            />
-          </View>
           <ScrollView
             contentContainerStyle={{
               paddingBottom: dockInset,
             }}
             keyboardShouldPersistTaps="handled"
           >
-            <View className="rounded-b-3xl bg-surface pt-2">
-              <ChooserButton
-                title={selectedAccount?.name}
-                decorLeft={
-                  <Image
-                    source={iconSource(selectedAccount?.icon)}
-                    alt={iconName(selectedAccount?.icon)}
-                    size="2xs"
-                  />
-                }
-                onPress={() => router.push('/transaction-form/account')}
-              />
-
-              <AmountField
-                inputRef={amount.inputRef}
-                autoFocus
-                value={amount.mode ? amount.formattedExpression : amount.shown}
-                onFocus={amount.open}
-                onClear={amount.clear}
-              />
-
-              <ChooserButton
-                title={selectedCategory?.name}
-                placeholder="Chọn nhóm"
-                size="lg"
-                decorLeft={
-                  <Image
-                    source={iconSource(selectedCategory?.icon)}
-                    alt={iconName(selectedCategory?.icon)}
-                    size="xs"
-                  />
-                }
-                onPress={() => router.push('/transaction-form/category')}
-              />
-
-              <ChooserButton
-                title={note || 'Ghi chú'}
-                size="lg"
-                decorLeft={<NotepadText />}
-                onPress={() => router.push('/transaction-form/note')}
-              />
-              <DatePicker value={occurredOn} onChange={setOccurredOn} />
-            </View>
+            <TransactionFormFields
+              kind={kind}
+              onKindChange={onKindChange}
+              account={selectedAccount}
+              category={selectedCategory}
+              note={note}
+              occurredOn={occurredOn}
+              onAccountPress={() => router.push('/transaction-form/account')}
+              onCategoryPress={() => router.push('/transaction-form/category')}
+              onNotePress={() => router.push('/transaction-form/note')}
+              onDateChange={setOccurredOn}
+              amountInputRef={amount.inputRef}
+              amountValue={amount.mode ? amount.formattedExpression : amount.shown}
+              autoFocusAmount
+              onAmountFocus={amount.open}
+              onAmountClear={amount.clear}
+            />
           </ScrollView>
         </View>
 

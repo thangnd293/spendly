@@ -5,3 +5,5 @@ export * from './SelectionOption';
 export * from './AddCategoryContext';
 export * from './DraftTransactionContext';
 export * from './ChooserButton';
+export * from './CategorySection';
+export * from './TransactionFormFields';
