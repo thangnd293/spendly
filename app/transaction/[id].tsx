@@ -117,7 +117,7 @@ export default function TransactionDetailScreen() {
             <Text>{transaction.accountName}</Text>
           </HStack>
         </VStack>
-        <View className="mx-6 rounded-3xl bg-green-50 p-4">
+        <View className="mx-6 rounded-3xl bg-noteSurface p-4">
           <HStack space="xs">
             <Text className="text-primary">❞</Text>
             <Text className="font-semibold text-primary">Ghi chú</Text>

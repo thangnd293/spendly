@@ -2,6 +2,7 @@ import { X } from 'lucide-react-native';
 import { Modal, Pressable, View } from 'react-native';
 
 import { HStack, Text } from '@/components/ui';
+import useColors from '@/hooks/useColors';
 
 type LedgerReportModalProps = {
   visible: boolean;
@@ -27,6 +28,7 @@ export default function LedgerReportModal({
 }: LedgerReportModalProps) {
   const fromLabel = formatDate(from);
   const toLabel = formatDate(to);
+  const colors = useColors();
 
   return (
     <Modal
@@ -37,7 +39,7 @@ export default function LedgerReportModal({
     >
       <Pressable className="flex-1 justify-end bg-black/35" onPress={onClose}>
         <Pressable className="rounded-t-3xl bg-surface px-6 pb-8 pt-3" onPress={() => {}}>
-          <View className="mx-auto mb-4 h-1 w-10 rounded-full bg-gray-300" />
+          <View className="mx-auto mb-4 h-1 w-10 rounded-full bg-dragHandle" />
           <HStack className="items-center justify-between">
             <Text size="lg" bold>
               Báo cáo
@@ -48,7 +50,7 @@ export default function LedgerReportModal({
               accessibilityRole="button"
               accessibilityLabel="Đóng báo cáo"
             >
-              <X size={18} color="#88888c" />
+              <X size={18} color={colors.muted} />
             </Pressable>
           </HStack>
           {fromLabel || toLabel ? (

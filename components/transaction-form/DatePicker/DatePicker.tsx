@@ -103,7 +103,7 @@ function DatePicker({ value, onChange, onOpen }: DatePickerProps) {
                   [selected]: {
                     selected: true,
                     selectedColor: colors.primary,
-                    selectedTextColor: '#FFFFFF',
+                    selectedTextColor: colors.onPrimary,
                   },
                 }}
                 renderHeader={(date) => (
@@ -132,7 +132,7 @@ function DatePicker({ value, onChange, onOpen }: DatePickerProps) {
                 theme={{
                   calendarBackground: colors.surface,
                   textSectionTitleColor: colors.muted,
-                  todayTextColor: colors.accent,
+                  todayTextColor: colors.info,
                   dayTextColor: colors.foreground,
                   textDisabledColor: colors.muted,
                   textDayFontSize: 16,

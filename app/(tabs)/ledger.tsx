@@ -18,12 +18,14 @@ import { getTransactionBalanceSummary, listGroupedTransactions } from '@/data/tr
 import { useDbQuery } from '@/hooks/useDbQuery';
 import { formatMoney } from '@/utils/money';
 import { createMonthTabs } from '@/components/ledger/ScrollTabs/createMonthTabs';
+import useColors from '@/hooks/useColors';
 
 const START_DATE = 25;
 const TABS = createMonthTabs(START_DATE);
 
 const INITIAL_PAGE = TABS.findIndex((tab) => tab.label.startsWith('Tháng này ('));
 export default function LedgerScreen() {
+  const colors = useColors();
   const [selected, setSelected] = useState(TABS[INITIAL_PAGE].key);
   const [reportOpen, setReportOpen] = useState(false);
   const selectedTab = TABS.find((tab) => tab.key === selected);
@@ -50,8 +52,8 @@ export default function LedgerScreen() {
           <>
             <HStack className="mt-4 items-center" space="md">
               <FormRowLeading>
-                <Center className="rounded-full bg-green-50 p-3.5">
-                  <Wallet color="green" />
+                <Center className="rounded-full bg-positiveSurface p-3.5">
+                  <Wallet color={colors.positive} />
                 </Center>
               </FormRowLeading>
 
@@ -69,8 +71,8 @@ export default function LedgerScreen() {
 
             <HStack className="items-center" space="md">
               <FormRowLeading>
-                <Center className="rounded-full bg-green-50 p-3.5">
-                  <CircleDollarSign color="green" />
+                <Center className="rounded-full bg-positiveSurface p-3.5">
+                  <CircleDollarSign color={colors.positive} />
                 </Center>
               </FormRowLeading>
               <VStack className="flex-1">
@@ -82,16 +84,16 @@ export default function LedgerScreen() {
                 </Text>
               </VStack>
               <HStack
-                className={`rounded-full px-3 py-2 ${isBalanceIncreased ? 'bg-green-50' : 'bg-red-50'}`}
+                className={`rounded-full px-3 py-2 ${isBalanceIncreased ? 'bg-positiveSurface' : 'bg-negativeSurface'}`}
                 space="sm"
               >
                 {isBalanceIncreased ? (
-                  <TrendingUp color="green" size={14} />
+                  <TrendingUp color={colors.positive} size={14} />
                 ) : (
-                  <TrendingDown color="red" size={14} />
+                  <TrendingDown color={colors.negative} size={14} />
                 )}
                 <Text
-                  className={isBalanceIncreased ? 'text-green-700' : 'text-red-700'}
+                  className={isBalanceIncreased ? 'text-positive' : 'text-negative'}
                   size="xs"
                   bold
                 >
@@ -100,10 +102,10 @@ export default function LedgerScreen() {
               </HStack>
             </HStack>
             <Pressable
-              className="flex-row items-center rounded-lg bg-green-50 px-3 py-3"
+              className="flex-row items-center rounded-lg bg-positiveSurface px-3 py-3"
               onPress={() => setReportOpen(true)}
               style={{
-                shadowColor: '#000000',
+                shadowColor: colors.shadow,
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.06,
                 shadowRadius: 2,
@@ -118,7 +120,7 @@ export default function LedgerScreen() {
               <Text className="ml-3 flex-1 text-primary" size="sm">
                 Xem báo cáo cho giai đoạn này
               </Text>
-              <ChevronRight size={16} color="#3fbc5b" strokeWidth={2} />
+              <ChevronRight size={16} color={colors.primary} strokeWidth={2} />
             </Pressable>
           </>
         )}
