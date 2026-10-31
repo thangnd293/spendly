@@ -13,7 +13,7 @@ export function useDbMutation<TInput, TResult>(
     async (input: TInput) => {
       setPending(true);
       try {
-        await mutateRef.current(db, input);
+        return await mutateRef.current(db, input);
       } finally {
         setPending(false);
       }
