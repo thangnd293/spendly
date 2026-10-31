@@ -14,6 +14,13 @@ module.exports = {
   theme: {
     extend: {
       colors: toCssVariables(colors.light),
+      fontFamily: {
+        system: ['System'],
+        'roboto-400': ['Roboto_400Regular'],
+        'roboto-500': ['Roboto_500Medium'],
+        'roboto-600': ['Roboto_600SemiBold'],
+        'roboto-700': ['Roboto_700Bold'],
+      },
     },
   },
   plugins: [],
