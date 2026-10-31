@@ -65,7 +65,21 @@ async function assertValid(db: SQLiteDatabase, input: TransactionInput) {
     throw new Error('Invalid amountVnd');
   }
 
-  if (!/\d{4}-\d{2}-\d{2}/.test(input.occurredOn)) {
+  const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(input.occurredOn);
+  if (!dateMatch) {
+    throw new Error('Invalid occurredOn');
+  }
+
+  const [, yearText, monthText, dayText] = dateMatch;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
     throw new Error('Invalid occurredOn');
   }
 
