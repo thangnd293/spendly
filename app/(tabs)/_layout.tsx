@@ -3,23 +3,14 @@ import { Banknote, House, Plus, UserRound, Wallet } from 'lucide-react-native';
 import { Pressable } from 'react-native';
 
 import { Center } from '@/components/ui/Center';
-import useColors from '@/hooks/useColors';
 
 export default function TabLayout() {
-  const colors = useColors();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.primary,
         headerShown: true,
+        headerTransparent: false,
         headerShadowVisible: false,
-        headerStyle: {
-          backgroundColor: colors.background,
-        },
-        sceneStyle: {
-          backgroundColor: colors.background,
-        },
       }}
     >
       <Tabs.Screen

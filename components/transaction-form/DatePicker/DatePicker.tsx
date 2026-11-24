@@ -77,7 +77,7 @@ function DatePicker({ value, onChange, onOpen }: DatePickerProps) {
       </HStack>
       <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
         <Pressable
-          className="flex-1 items-center justify-center bg-black/35 p-6"
+          className="flex-1 items-center justify-center bg-scrim p-6"
           onPress={() => setOpen(false)}
         >
           <Pressable

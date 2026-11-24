@@ -12,6 +12,8 @@ import { CategoryKind } from '@/data/category';
 import { SAMPLE_CATEGORIES } from '@/data/sample';
 
 export type DraftTransactionContextValue = {
+  participants: string[];
+  setParticipants: Dispatch<SetStateAction<string[]>>;
   account: string | null;
   setAccount: Dispatch<SetStateAction<string | null>>;
   amount: number;
@@ -30,6 +32,7 @@ export type DraftTransactionContextValue = {
 const DraftTransactionContext = createContext<DraftTransactionContextValue | null>(null);
 
 export function DraftTransactionProvider({ children }: PropsWithChildren) {
+  const [participants, setParticipants] = useState<string[]>(['Bạn']);
   const [account, setAccount] = useState<string | null>('acc_cash');
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState<string | null>(SAMPLE_CATEGORIES[0].id);
@@ -38,6 +41,7 @@ export function DraftTransactionProvider({ children }: PropsWithChildren) {
   const [kind, setKind] = useState<CategoryKind>('spend');
 
   const resetValues = useCallback(() => {
+    setParticipants(['Bạn']);
     setAccount('acc_cash');
     setCategory(SAMPLE_CATEGORIES[0].id);
     setNote('');
@@ -49,6 +53,8 @@ export function DraftTransactionProvider({ children }: PropsWithChildren) {
   return (
     <DraftTransactionContext.Provider
       value={{
+        participants,
+        setParticipants,
         account,
         setAccount,
         amount,

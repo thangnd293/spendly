@@ -1,13 +1,13 @@
 import { X } from 'lucide-react-native';
 import { RefObject } from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { Pressable, TextInput, TextInputInstance, View } from 'react-native';
 
 import { FormRowLeading } from '@/components/transaction-form/FormRowLeading';
 import { Divider, HStack, Text } from '@/components/ui';
 
 type AmountFieldProps = {
   value: string;
-  inputRef?: RefObject<TextInput | null>;
+  inputRef?: RefObject<TextInputInstance | null>;
   autoFocus?: boolean;
   onFocus: () => void;
   onClear: () => void;

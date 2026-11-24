@@ -80,7 +80,7 @@ function AlertDialogBackdrop({ className, ...props }: AlertDialogBackdropProps) 
     <Pressable
       {...props}
       accessibilityRole="button"
-      className={`absolute inset-0 z-0 bg-black/50 ${className ?? ''}`}
+      className={`absolute inset-0 z-0 bg-scrimStrong ${className ?? ''}`}
       onPress={closeOnOverlayClick ? onClose : undefined}
     />
   );

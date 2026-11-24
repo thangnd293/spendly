@@ -14,14 +14,20 @@ type ChooserButtonProps = {
   onPress: () => void;
 };
 
-function ChooserButton({ title, onPress, placeholder, size = 'md', decorLeft }: ChooserButtonProps) {
+function ChooserButton({
+  title,
+  onPress,
+  placeholder,
+  size = 'md',
+  decorLeft,
+}: ChooserButtonProps) {
   const colors = useColors();
   const hasTitle = Boolean(title);
   const spacing = size === 'md' ? 'md' : 'xl';
   const paddingTop = size === 'md' ? 'pt-3' : 'pt-5';
 
   return (
-    <Pressable accessibilityRole="button" className="active:bg-black/10" onPress={onPress}>
+    <Pressable accessibilityRole="button" className="active:bg-dragHandle" onPress={onPress}>
       <HStack>
         <FormRowLeading>{decorLeft}</FormRowLeading>
         <VStack space={spacing} className="flex-1">

@@ -1,5 +1,4 @@
 import { router } from 'expo-router';
-import { useHeaderHeight } from 'expo-router/react-navigation';
 import { ChevronRight, ChevronsUpDown, Diff, Package, X } from 'lucide-react-native';
 import { KeyboardAvoidingView, Platform, Pressable, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,7 +15,6 @@ import { iconName, iconSource } from '@/utils/icons';
 
 export default function AddCategoryScreen() {
   const insets = useSafeAreaInsets();
-  const headerHeight = useHeaderHeight();
   const colors = useColors();
   const draftCategory = useAddCategory();
   const draftTransaction = useDraftTransaction();
@@ -51,7 +49,6 @@ export default function AddCategoryScreen() {
     <KeyboardAvoidingView
       className="flex-1"
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={headerHeight + 24}
     >
       <View className="flex-1 justify-between" style={{ paddingBottom: insets.bottom + 16 }}>
         <View className="mx-3 my-2 overflow-hidden rounded-3xl bg-surface">

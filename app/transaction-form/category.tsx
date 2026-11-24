@@ -37,7 +37,7 @@ export default function CategoryScreen() {
   const sections = sectionOf(categories);
 
   return (
-    <View className="flex-1 bg-background pt-4">
+    <View className="flex-1 pt-4">
       <RadioGroup
         className="mx-6 mb-4 rounded-full bg-black/10"
         itemClassName="w-1/2"

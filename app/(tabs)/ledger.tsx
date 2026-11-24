@@ -1,10 +1,10 @@
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import EmptyState from '@/components/ledger/EmptyState';
 import { LedgerBalanceSummary } from '@/components/ledger/LedgerBalanceSummary';
 import { LedgerReportButton } from '@/components/ledger/LedgerReportButton';
-import LedgerReportModal from '@/components/ledger/LedgerReportModal';
 import ScrollTabs from '@/components/ledger/ScrollTabs/ScrollTabs';
 import TransactionGroupByDate from '@/components/TransactionGroupByDate';
 import { VStack } from '@/components/ui';
@@ -18,7 +18,6 @@ const TABS = createMonthTabs(START_DATE);
 const INITIAL_PAGE = TABS.findIndex((tab) => tab.label.startsWith('Tháng này ('));
 export default function LedgerScreen() {
   const [selected, setSelected] = useState(TABS[INITIAL_PAGE].key);
-  const [reportOpen, setReportOpen] = useState(false);
   const selectedTab = TABS.find((tab) => tab.key === selected);
 
   const { data: transactions } = useDbQuery(
@@ -40,7 +39,17 @@ export default function LedgerScreen() {
         {transactions.length > 0 && (
           <>
             <LedgerBalanceSummary summary={balanceSummary} />
-            <LedgerReportButton onPress={() => setReportOpen(true)} />
+            <LedgerReportButton
+              onPress={() =>
+                router.push({
+                  pathname: '/ledger-report',
+                  params: {
+                    from: selectedTab?.from.toISOString(),
+                    to: selectedTab?.to?.toISOString(),
+                  },
+                })
+              }
+            />
           </>
         )}
       </VStack>
@@ -60,12 +69,6 @@ export default function LedgerScreen() {
         />
       </VStack>
 
-      <LedgerReportModal
-        visible={reportOpen}
-        from={selectedTab?.from ?? null}
-        to={selectedTab?.to ?? null}
-        onClose={() => setReportOpen(false)}
-      />
     </View>
   );
 }

@@ -3,7 +3,6 @@ import { Pressable, PressableProps } from 'react-native';
 import { VariantProps } from 'tailwind-variants';
 
 import { Text } from '@/components/ui/Text';
-
 import { buttonStyle, buttonTextStyle } from './styles';
 
 type ButtonProps = Omit<PressableProps, 'children'> &
@@ -18,6 +17,7 @@ function Button({ title, className, icon, variant, disabled = false, ...props }:
     <Pressable
       {...props}
       disabled={disabled}
+      accessibilityState={{ disabled }}
       accessibilityRole={props.accessibilityRole ?? 'button'}
       className={buttonStyle({ variant, disabled, class: className })}
     >

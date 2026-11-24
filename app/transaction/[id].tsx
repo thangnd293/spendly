@@ -56,12 +56,6 @@ export default function TransactionDetailScreen() {
           title: '',
           headerBackButtonDisplayMode: 'minimal',
           headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: colors.background,
-          },
-          contentStyle: {
-            backgroundColor: colors.background,
-          },
           headerRight: () => (
             <Pressable
               accessibilityRole="button"

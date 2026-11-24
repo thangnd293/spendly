@@ -51,7 +51,7 @@ export default function EditTransactionScreen() {
 
   if (!id) {
     return (
-      <View className="flex-1 items-center justify-center bg-background p-6">
+      <View className="flex-1 items-center justify-center p-6">
         <Text className="text-muted">Thiếu mã giao dịch</Text>
       </View>
     );
@@ -59,7 +59,7 @@ export default function EditTransactionScreen() {
 
   if (!transaction) {
     return (
-      <View className="flex-1 items-center justify-center bg-background p-6">
+      <View className="flex-1 items-center justify-center p-6">
         <Text className="text-muted">Đang tải giao dịch...</Text>
       </View>
     );

@@ -8,3 +8,6 @@ export * from './tabs';
 export * from './Text';
 export * from './VStack';
 export * from './AlertDialog';
+export * from './Tooltip';
+export * from './Checkbox';
+export * from './Avatar';

@@ -2,7 +2,7 @@ const colors = {
   light: {
     primary: '#3fbc5b',
     info: '#2F80ED',
-    background: '#eeeeee',
+    background: '#f2f2f6',
     foreground: '#1c1c1c',
     muted: '#88888c',
     spend: '#fe2e33',
@@ -12,12 +12,16 @@ const colors = {
     border: '#E9E9EE',
     positive: '#15803d',
     positiveSurface: '#f0fdf4',
-    negative: '#b91c1c',
+    negative: '#fe2e33',
     negativeSurface: '#fef2f2',
     noteSurface: '#f0fdf4',
     dragHandle: '#d1d5db',
     onPrimary: '#ffffff',
     shadow: '#000000',
+    scrim: '#00000059',
+    scrimStrong: '#00000080',
+    chartGradientStart: '#3fbc5b',
+    chartGradientEnd: '#c9efcf',
   },
   dark: {
     primary: '#3fbc5b',
@@ -38,6 +42,10 @@ const colors = {
     dragHandle: '#52525b',
     onPrimary: '#ffffff',
     shadow: '#000000',
+    scrim: '#00000059',
+    scrimStrong: '#00000080',
+    chartGradientStart: '#3fbc5b',
+    chartGradientEnd: '#285d36',
   },
 } as const;
 

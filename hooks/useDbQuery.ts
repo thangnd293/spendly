@@ -9,6 +9,8 @@ export function useDbQuery<T>(
 ) {
   const db = useSQLiteContext();
   const [data, setData] = useState(initial);
+  const [loading, setLoading] = useState(true);
+
   const queryRef = useRef(query);
   queryRef.current = query;
 
@@ -20,9 +22,14 @@ export function useDbQuery<T>(
     useCallback(() => {
       let active = true;
 
-      void queryRef.current(db).then((next) => {
-        if (active) setData(next);
-      });
+      void queryRef
+        .current(db)
+        .then((next) => {
+          if (active) setData(next);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
 
       return () => {
         active = false;
@@ -30,5 +37,5 @@ export function useDbQuery<T>(
     }, [db, ...deps]),
   );
 
-  return { data, reload };
+  return { data, loading, reload };
 }
